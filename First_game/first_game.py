@@ -16,6 +16,7 @@ HEALTH_FONT = pygame.font.SysFont('comicsans', 40)
 WINNER_FONT = pygame.font.SysFont('ebrima', 100)
 HIT_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'Grenade+1.mp3'))
 FIRE_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'Gun+Silencer.mp3'))
+WIN_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'win.mp3'))
 
 BORDER_WIDTH = 10
 BORDER = pygame.Rect((WIDTH // 2) - (BORDER_WIDTH // 2), 0, BORDER_WIDTH, HEIGHT)
@@ -148,9 +149,11 @@ def main():
                 HIT_SOUND.play()
         win_txt = ''
         if red_hp <= 0:
+            WIN_SOUND.play()
             win_txt = "Yellow Wins!"
 
         if yellow_hp <= 0:
+            WIN_SOUND.play()
             win_txt = "Red Wins!"
 
         if win_txt != '':
