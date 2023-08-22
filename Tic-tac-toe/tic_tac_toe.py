@@ -270,6 +270,9 @@ def main():
         if o_wins:
             WIN_SOUND.play()
             win_txt = "O-player WINS!"
+            
+        if turn >= 9:
+            win_txt = 'DRAW!'
 
         if win_txt != '':
             draw_winner(win_txt)
