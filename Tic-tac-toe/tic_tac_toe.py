@@ -1,5 +1,7 @@
 import pygame
 import os
+pygame.mixer.init()
+pygame.font.init()
 
 pygame.display.set_caption("Tic-tac-toe")
 SIDE = 700
@@ -7,6 +9,7 @@ FPS = 30
 WIN = pygame.display.set_mode((SIDE, SIDE))
 LINE_WIDTH = 60
 
+RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 PAPER = pygame.image.load(os.path.join('Assets', 'paper_background.jpg'))
 HORIZONTAL_LINE = pygame.image.load(os.path.join('Assets', "black_line.png"))
@@ -14,6 +17,9 @@ VERTICAL_LINE = pygame.transform.rotate(HORIZONTAL_LINE, 90)
 SQUARE = pygame.image.load(os.path.join('Assets', 'square_frame.png'))
 X_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_x.png'))
 O_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_o.png'))
+DRAW_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'draw.mp3'))
+WIN_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'win.mp3'))
+WINNER_FONT = pygame.font.SysFont('ebrima', 100)
 
 
 def draw_game(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, mouse_position):
@@ -82,8 +88,149 @@ def draw_game(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, mouse_position):
     pygame.display.update()
 
 
-def main():
+def keep_score(mouse_pressed, mouse_position, t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, turn):
+    if mouse_pressed[0]:
+        if mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 and not t_l:
+            if turn % 2 == 0:
+                t_l = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                t_l = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+        elif SIDE / 3 < mouse_position[0] < (SIDE / 3) * 2 and mouse_position[1] < SIDE / 3 and not t_m:
+            if turn % 2 == 0:
+                t_m = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                t_m = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+        elif (SIDE / 3) * 2 < mouse_position[0] < SIDE and mouse_position[1] < SIDE / 3 and not t_r:
+            if turn % 2 == 0:
+                t_r = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                t_r = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+        elif mouse_position[0] < SIDE / 3 and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_l:
+            if turn % 2 == 0:
+                m_l = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                m_l = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+        elif SIDE / 3 < mouse_position[0] < (SIDE / 3) * 2 and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_m:
+            if turn % 2 == 0:
+                m_m = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                m_m = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+        elif SIDE / 3 * 2 < mouse_position[0] < SIDE and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_r:
+            if turn % 2 == 0:
+                m_r = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                m_r = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+        elif mouse_position[0] < SIDE / 3 and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_l:
+            if turn % 2 == 0:
+                b_l = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                b_l = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+        elif SIDE / 3 < mouse_position[0] < SIDE / 3 * 2 and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_m:
+            if turn % 2 == 0:
+                b_m = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                b_m = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+        elif SIDE / 3 * 2 < mouse_position[0] < SIDE and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_r:
+            if turn % 2 == 0:
+                b_r = 'x'
+                turn += 1
+                DRAW_SOUND.play()
+            else:
+                b_r = 'o'
+                turn += 1
+                DRAW_SOUND.play()
+    return t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, turn
 
+
+def check_winner(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r):
+    x_wins = False
+    o_wins = False
+    if t_l == t_m == t_r:
+        if t_l == 'x':
+            x_wins = True
+        elif t_l == 'o':
+            o_wins = True
+    elif m_l == m_m == m_r:
+        if m_l == 'x':
+            x_wins = True
+        elif m_l == 'o':
+            o_wins = True
+    elif b_l == b_m == b_r:
+        if b_l == 'x':
+            x_wins = True
+        elif b_l == 'o':
+            o_wins = True
+    elif t_l == m_l == b_l:
+        if t_l == 'x':
+            x_wins = True
+        elif t_l == 'o':
+            o_wins = True
+    elif t_m == m_m == b_m:
+        if t_m == 'x':
+            x_wins = True
+        elif t_m == 'o':
+            o_wins = True
+    elif t_r == m_r == b_r:
+        if t_r == 'x':
+            x_wins = True
+        elif t_r == 'o':
+            o_wins = True
+    elif t_l == m_m == b_r:
+        if t_l == 'x':
+            x_wins = True
+        elif t_l == 'o':
+            o_wins = True
+    elif t_r == m_m == b_l:
+        if t_r == 'x':
+            x_wins = True
+        elif t_r == 'o':
+            o_wins = True
+
+    return x_wins, o_wins
+
+
+def draw_winner(text):
+    draw_text = WINNER_FONT.render(text, 1, RED)
+    WIN.blit(draw_text, (SIDE / 2 - draw_text.get_width() / 2, SIDE / 2 - draw_text.get_height() / 2))
+    pygame.display.update()
+    pygame.time.delay(3000)
+
+
+def main():
+    o_wins = False
+    x_wins = False
     turn = 0
     clock = pygame.time.Clock()
     run = True
@@ -103,76 +250,31 @@ def main():
         clock.tick(FPS)
         mouse_position = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
-        if mouse_pressed[0]:
-            if mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 and not t_l:
-                if turn % 2 == 0:
-                    t_l = 'x'
-                    turn += 1
-                else:
-                    t_l = 'o'
-                    turn += 1
-            elif SIDE / 3 < mouse_position[0] < (SIDE / 3) * 2 and mouse_position[1] < SIDE / 3 and not t_m:
-                if turn % 2 == 0:
-                    t_m = 'x'
-                    turn += 1
-                else:
-                    t_m = 'o'
-                    turn += 1
-            elif (SIDE / 3) * 2 < mouse_position[0] < SIDE and mouse_position[1] < SIDE / 3 and not t_r:
-                if turn % 2 == 0:
-                    t_r = 'x'
-                    turn += 1
-                else:
-                    t_r = 'o'
-                    turn += 1
-            elif mouse_position[0] < SIDE / 3 and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_l:
-                if turn % 2 == 0:
-                    m_l = 'x'
-                    turn += 1
-                else:
-                    m_l = 'o'
-                    turn += 1
-            elif SIDE / 3 < mouse_position[0] < (SIDE / 3) * 2 and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_m:
-                if turn % 2 == 0:
-                    m_m = 'x'
-                    turn += 1
-                else:
-                    m_m = 'o'
-                    turn += 1
-            elif SIDE / 3 * 2 < mouse_position[0] < SIDE and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_r:
-                if turn % 2 == 0:
-                    m_r = 'x'
-                    turn += 1
-                else:
-                    m_r = 'o'
-                    turn += 1
-            elif mouse_position[0] < SIDE / 3 and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_l:
-                if turn % 2 == 0:
-                    b_l = 'x'
-                    turn += 1
-                else:
-                    b_l = 'o'
-                    turn += 1
-            elif SIDE / 3 < mouse_position[0] < SIDE / 3 * 2 and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_m:
-                if turn % 2 == 0:
-                    b_m = 'x'
-                    turn += 1
-                else:
-                    b_m = 'o'
-                    turn += 1
-            elif SIDE / 3 * 2 < mouse_position[0] < SIDE and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_r:
-                if turn % 2 == 0:
-                    b_r = 'x'
-                    turn += 1
-                else:
-                    b_r = 'o'
-                    turn += 1
+        t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, turn = keep_score(
+            mouse_pressed, mouse_position, t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, turn)
+
+        x_wins, o_wins = check_winner(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r)
 
         draw_game(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, mouse_position)
+
+        win_txt = ''
+        if x_wins:
+            WIN_SOUND.play()
+            win_txt = "X-player WINS!"
+
+        if o_wins:
+            WIN_SOUND.play()
+            win_txt = "O-player WINS!"
+
+        if win_txt != '':
+            draw_winner(win_txt)
+            break
+
     pygame.quit()
 
 
