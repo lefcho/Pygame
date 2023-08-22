@@ -23,23 +23,23 @@ def draw_game(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, mouse_position):
     WIN.blit(HORIZONTAL_LINE, (0, SIDE / 3 - LINE_WIDTH / 2))
     WIN.blit(HORIZONTAL_LINE, (0, (SIDE / 3) * 2 - LINE_WIDTH / 2))
 
-    if mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3:   #TOP_LEFT
+    if mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 and not t_l:  # TOP_LEFT
         WIN.blit(SQUARE, (10, 10))
-    elif mouse_position[0] < (SIDE / 3) * 2 and mouse_position[1] < SIDE / 3:   #TOP_MIDDLE
+    elif mouse_position[0] < (SIDE / 3) * 2 and mouse_position[1] < SIDE / 3 and not t_m:   # TOP_MIDDLE
         WIN.blit(SQUARE, (12 + SIDE / 3, 10))
-    elif (SIDE / 3) * 2 < mouse_position[0] < (SIDE / 3) * 3 and mouse_position[1] < SIDE / 3:   #TOP_RIGHt
+    elif (SIDE / 3) * 2 < mouse_position[0] < (SIDE / 3) * 3 and mouse_position[1] < SIDE / 3 and not t_r:   # TOP_RIGHt
         WIN.blit(SQUARE, (12 + SIDE / 3 * 2, 10))
-    elif mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 * 2:   #MIDDLE_LEFT
+    elif mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 * 2 and not m_l:   # MIDDLE_LEFT
         WIN.blit(SQUARE, (10, 12 + SIDE / 3))
-    elif mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 * 3:   #BOTTOM_LEFT
+    elif mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 * 3 and not b_l:   # BOTTOM_LEFT
         WIN.blit(SQUARE, (10, 12 + SIDE / 3 * 2))
-    elif mouse_position[0] < SIDE / 3 * 2 and mouse_position[1] < SIDE / 3 * 2:   #MIDDLE_MIDDLE
+    elif mouse_position[0] < SIDE / 3 * 2 and mouse_position[1] < SIDE / 3 * 2 and not m_m:   # MIDDLE_MIDDLE
         WIN.blit(SQUARE, (12 + SIDE / 3, 12 + SIDE / 3))
-    elif mouse_position[0] < SIDE / 3 * 3 and mouse_position[1] < SIDE / 3 * 2:   #MIDDLE_RIGHT
+    elif mouse_position[0] < SIDE / 3 * 3 and mouse_position[1] < SIDE / 3 * 2 and not m_r:   # MIDDLE_RIGHT
         WIN.blit(SQUARE, (12 + SIDE / 3 * 2, 12 + SIDE / 3))
-    elif mouse_position[0] < SIDE / 3 * 2 and mouse_position[1] < SIDE / 3 * 3:    #BOTTOM_MIDDLE
+    elif mouse_position[0] < SIDE / 3 * 2 and mouse_position[1] < SIDE / 3 * 3 and not b_m:    # BOTTOM_MIDDLE
         WIN.blit(SQUARE, (SIDE / 3 + 12, 12 + SIDE / 3 * 2))
-    elif mouse_position[0] < SIDE / 3 * 3 and mouse_position[1] < SIDE / 3 * 3:   #BOTTOM_RIGHT
+    elif mouse_position[0] < SIDE / 3 * 3 and mouse_position[1] < SIDE / 3 * 3 and not b_r:   # BOTTOM_RIGHT
         WIN.blit(SQUARE, (SIDE / 3 * 2 + 12, 12 + SIDE / 3 * 2))
 
     if t_l == 'x':
@@ -108,7 +108,6 @@ def main():
                 run = False
 
         if mouse_pressed[0]:
-            print(mouse_position)
             if mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 and not t_l:
                 if turn % 2 == 0:
                     t_l = 'x'
