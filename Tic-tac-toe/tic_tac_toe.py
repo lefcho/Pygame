@@ -1,5 +1,6 @@
 import pygame
 import os
+import sys
 pygame.mixer.init()
 pygame.font.init()
 
@@ -19,6 +20,7 @@ X_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_x.png'))
 O_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_o.png'))
 DRAW_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'draw.mp3'))
 WIN_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'win.mp3'))
+TIE_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'tie.wav'))
 WINNER_FONT = pygame.font.SysFont('ebrima', 100)
 
 
@@ -182,37 +184,37 @@ def check_winner(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r):
             x_wins = True
         elif t_l == 'o':
             o_wins = True
-    elif m_l == m_m == m_r:
+    if m_l == m_m == m_r:
         if m_l == 'x':
             x_wins = True
         elif m_l == 'o':
             o_wins = True
-    elif b_l == b_m == b_r:
+    if b_l == b_m == b_r:
         if b_l == 'x':
             x_wins = True
         elif b_l == 'o':
             o_wins = True
-    elif t_l == m_l == b_l:
+    if t_l == m_l == b_l:
         if t_l == 'x':
             x_wins = True
         elif t_l == 'o':
             o_wins = True
-    elif t_m == m_m == b_m:
+    if t_m == m_m == b_m:
         if t_m == 'x':
             x_wins = True
         elif t_m == 'o':
             o_wins = True
-    elif t_r == m_r == b_r:
+    if t_r == m_r == b_r:
         if t_r == 'x':
             x_wins = True
         elif t_r == 'o':
             o_wins = True
-    elif t_l == m_m == b_r:
+    if t_l == m_m == b_r:
         if t_l == 'x':
             x_wins = True
         elif t_l == 'o':
             o_wins = True
-    elif t_r == m_m == b_l:
+    if t_r == m_m == b_l:
         if t_r == 'x':
             x_wins = True
         elif t_r == 'o':
@@ -229,11 +231,13 @@ def draw_winner(text):
 
 
 def main():
+    mouse_pressed = (False, False, False)
     o_wins = False
     x_wins = False
     turn = 0
     clock = pygame.time.Clock()
     run = True
+    restart = True
 
     t_l = ''
     t_m = ''
@@ -253,7 +257,13 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.quit()
                 run = False
+                sys.exit()
+
+        if restart and mouse_pressed[0]:
+            restart = False
+            continue
 
         t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, turn = keep_score(
             mouse_pressed, mouse_position, t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, turn)
@@ -267,18 +277,19 @@ def main():
             WIN_SOUND.play()
             win_txt = "X-player WINS!"
 
-        if o_wins:
+        elif o_wins:
             WIN_SOUND.play()
             win_txt = "O-player WINS!"
-            
-        if turn >= 9:
+
+        elif turn >= 9:
+            TIE_SOUND.play()
             win_txt = 'DRAW!'
 
         if win_txt != '':
             draw_winner(win_txt)
             break
 
-    pygame.quit()
+    main()
 
 
 if __name__ == "__main__":
