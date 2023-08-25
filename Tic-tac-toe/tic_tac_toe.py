@@ -9,19 +9,22 @@ SIDE = 700
 FPS = 30
 WIN = pygame.display.set_mode((SIDE, SIDE))
 LINE_WIDTH = 60
+END_MESSAGE_BG_HEIGHT = 120
 
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 PAPER = pygame.image.load(os.path.join('Assets', 'paper_background.jpg'))
 HORIZONTAL_LINE = pygame.image.load(os.path.join('Assets', "black_line.png"))
 VERTICAL_LINE = pygame.transform.rotate(HORIZONTAL_LINE, 90)
 SQUARE = pygame.image.load(os.path.join('Assets', 'square_frame.png'))
-X_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_x.png'))
-O_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_o.png'))
+X_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_x1.png'))
+O_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_o1.png'))
+END_MESSAGE_BACKGROUND = pygame.Rect(0, SIDE / 2 - END_MESSAGE_BG_HEIGHT / 2, SIDE, END_MESSAGE_BG_HEIGHT)
 DRAW_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'draw.mp3'))
 WIN_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'win.mp3'))
 TIE_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'tie.wav'))
-WINNER_FONT = pygame.font.SysFont('ebrima', 100)
+WINNER_FONT = pygame.font.SysFont('inkfree', 80)
 
 
 def draw_game(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, mouse_position):
@@ -224,7 +227,8 @@ def check_winner(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r):
 
 
 def draw_winner(text):
-    draw_text = WINNER_FONT.render(text, 1, RED)
+    draw_text = WINNER_FONT.render(text, 1, WHITE)
+    pygame.draw.rect(WIN, BLACK, END_MESSAGE_BACKGROUND)
     WIN.blit(draw_text, (SIDE / 2 - draw_text.get_width() / 2, SIDE / 2 - draw_text.get_height() / 2))
     pygame.display.update()
     pygame.time.delay(3000)
@@ -250,7 +254,6 @@ def main():
     b_r = ''
 
     while run:
-
         clock.tick(FPS)
         mouse_position = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
