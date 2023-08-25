@@ -21,7 +21,8 @@ SQUARE = pygame.image.load(os.path.join('Assets', 'square_frame.png'))
 X_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_x1.png'))
 O_IMAGE = pygame.image.load(os.path.join('Assets', 'ttt_o1.png'))
 END_MESSAGE_BACKGROUND = pygame.Rect(0, SIDE / 2 - END_MESSAGE_BG_HEIGHT / 2, SIDE, END_MESSAGE_BG_HEIGHT)
-DRAW_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'draw.mp3'))
+WRITE_X_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'white_x.mp3'))
+WRITE_O_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'white_o.mp3'))
 WIN_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'win.mp3'))
 TIE_SOUND = pygame.mixer.Sound(os.path.join('Assets', 'tie.wav'))
 WINNER_FONT = pygame.font.SysFont('inkfree', 80)
@@ -99,85 +100,84 @@ def keep_score(mouse_pressed, mouse_position, t_l, t_m, t_r, m_l, m_m, m_r, b_l,
             if turn % 2 == 0:
                 t_l = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 t_l = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
         elif SIDE / 3 < mouse_position[0] < (SIDE / 3) * 2 and mouse_position[1] < SIDE / 3 and not t_m:
             if turn % 2 == 0:
                 t_m = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 t_m = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
         elif (SIDE / 3) * 2 < mouse_position[0] < SIDE and mouse_position[1] < SIDE / 3 and not t_r:
             if turn % 2 == 0:
                 t_r = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 t_r = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
         elif mouse_position[0] < SIDE / 3 and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_l:
             if turn % 2 == 0:
                 m_l = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 m_l = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
         elif SIDE / 3 < mouse_position[0] < (SIDE / 3) * 2 and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_m:
             if turn % 2 == 0:
                 m_m = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 m_m = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
         elif SIDE / 3 * 2 < mouse_position[0] < SIDE and SIDE / 3 < mouse_position[1] < SIDE / 3 * 2 and not m_r:
             if turn % 2 == 0:
                 m_r = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 m_r = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
         elif mouse_position[0] < SIDE / 3 and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_l:
             if turn % 2 == 0:
                 b_l = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 b_l = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
         elif SIDE / 3 < mouse_position[0] < SIDE / 3 * 2 and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_m:
             if turn % 2 == 0:
                 b_m = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 b_m = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
         elif SIDE / 3 * 2 < mouse_position[0] < SIDE and SIDE / 3 * 2 < mouse_position[1] < SIDE and not b_r:
             if turn % 2 == 0:
                 b_r = 'x'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_X_SOUND.play()
             else:
                 b_r = 'o'
                 turn += 1
-                DRAW_SOUND.play()
+                WRITE_O_SOUND.play()
     return t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, turn
-
 
 def check_winner(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r):
     x_wins = False
