@@ -11,6 +11,7 @@ SCREEN_WIDTH = 1000
 FPS = 30
 FONT_SIZE = 30
 FONT = pygame.font.SysFont('widelatin', FONT_SIZE)
+GUESS_FONT = pygame.font.SysFont("widelatin", FONT_SIZE + 20)
 
 EXIT_BUTTON_W = 120
 EXIT_BUTTON_H = 43
@@ -75,24 +76,32 @@ def draw_entering_password(password, font, pass_color, x, y):
     screen.blit(text, [(x - (width / 2)), y - (height / 2)])
 
 
+def draw_entering_guess(password, font, pass_color, x, y):
+    text = font.render(password, True, pass_color)
+    width = text.get_width()
+    height = text.get_height()
+    screen.blit(text, [(x - (width / 2)), y - (height / 2)])
+
+
 def main():
     clock = pygame.time.Clock()
     run = True
-    game_started = False
+    entering_password = False
     hanging_time = False
     password = ''
+    letter_guess = ''
     while run:
         clock.tick(FPS)
-        if not game_started:
+        if not entering_password:
             screen.blit(TITLE_BACKGROUND, (0, 0))
 
             if start_button.draw(screen):
-                game_started = True
+                entering_password = True
 
             if exit_button.draw(screen):
                 run = False
 
-        if game_started and not hanging_time:
+        if entering_password and not hanging_time:
             screen.blit(PASSWORD_BACKGROUND, (0, 0))
             draw_entering_password(password, FONT, BLACK, 380, 400)
             if exit_button.draw(screen):
@@ -100,25 +109,31 @@ def main():
 
             if hang_button.draw(screen) and password:
                 hanging_time = True
+                entering_password = False
 
         if hanging_time:
             screen.blit(DESERT_BACKGROUND, (0, 0))
             screen.blit(HANGMAN_STAGE_FINAL, (15, 110))
             track_answers(password)
+            draw_entering_guess(letter_guess, FONT, BLACK, 500, 400)
             if exit_button.draw(screen):
                 run = False
 
         for event in pygame.event.get():
             if event.type == pygame.TEXTINPUT:
-                if game_started:
-                    password += event.text
+                if entering_password:
+                    password += event.text.upper()
+                elif hanging_time:
+                    letter_guess = event.text.upper()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
-                    if game_started:
+                    if entering_password:
                         password = password[:-1]
-                if event.key == (pygame.K_RETURN or pygame.K_KP_ENTER) and password:
+                if event.key == (pygame.K_RETURN or pygame.K_KP_ENTER) and password and entering_password:
                     hanging_time = True
+                if event.key == (pygame.K_RETURN or pygame.K_KP_ENTER) and letter_guess and hanging_time:
+                    confirmed_guess = letter_guess
 
             if event.type == pygame.QUIT:
                 run = False
