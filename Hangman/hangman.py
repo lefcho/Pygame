@@ -18,6 +18,8 @@ START_BUTTON_W = 300
 START_BUTTON_H = 169
 HANG_BUTTON_W = 350
 HANG_BUTTON_H = 83
+LETTER_HOLDER_W = 25
+LETTER_HOLDER_H = 5
 
 BLACK = (0, 0, 0)
 
@@ -53,6 +55,18 @@ hang_button = (button.Button
                 HANG_IMG_UNSELECTED, HANG_IMG_SELECTED))
 
 
+def track_answers(password):
+    x_position = 400
+    list_of_holders = []
+    for _ in range(len(password)):
+        let_hold = pygame.Rect(x_position, 150, LETTER_HOLDER_W, LETTER_HOLDER_H)
+        list_of_holders.append(let_hold)
+        x_position += LETTER_HOLDER_W + 8
+
+    for let_holder in list_of_holders:
+        pygame.draw.rect(screen, BLACK, let_holder)
+
+
 def draw_entering_password(password, font, pass_color, x, y):
     text = font.render(password, True, pass_color)
     text = pygame.transform.rotate(text, 20)
@@ -84,12 +98,15 @@ def main():
             if exit_button.draw(screen):
                 run = False
 
-            if hang_button.draw(screen):
+            if hang_button.draw(screen) and password:
                 hanging_time = True
 
         if hanging_time:
             screen.blit(DESERT_BACKGROUND, (0, 0))
             screen.blit(HANGMAN_STAGE_FINAL, (15, 110))
+            track_answers(password)
+            if exit_button.draw(screen):
+                run = False
 
         for event in pygame.event.get():
             if event.type == pygame.TEXTINPUT:
