@@ -115,7 +115,7 @@ def main():
             screen.blit(DESERT_BACKGROUND, (0, 0))
             screen.blit(HANGMAN_STAGE_FINAL, (15, 110))
             track_answers(password)
-            draw_entering_guess(letter_guess, FONT, BLACK, 500, 400)
+            draw_entering_guess(letter_guess, GUESS_FONT, BLACK, 515, 400)
             if exit_button.draw(screen):
                 run = False
 
