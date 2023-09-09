@@ -132,6 +132,7 @@ def main():
                         password = password[:-1]
                 if event.key == (pygame.K_RETURN or pygame.K_KP_ENTER) and password and entering_password:
                     hanging_time = True
+                    entering_password = False
                 if event.key == (pygame.K_RETURN or pygame.K_KP_ENTER) and letter_guess and hanging_time:
                     confirmed_guess = letter_guess
 
