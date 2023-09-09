@@ -16,6 +16,8 @@ EXIT_BUTTON_W = 120
 EXIT_BUTTON_H = 43
 START_BUTTON_W = 300
 START_BUTTON_H = 169
+HANG_BUTTON_W = 350
+HANG_BUTTON_H = 83
 
 BLACK = (0, 0, 0)
 
@@ -27,11 +29,17 @@ START_IMG_UNSELECTED = pygame.image.load(os.path.join('Pictures', 'Start_game - 
 START_IMG_SELECTED = pygame.image.load(os.path.join('Pictures', 'Start_game - selected.png'))
 EXIT_IMG_UNSELECTED = pygame.image.load(os.path.join('Pictures', 'Exit - unselected.png'))
 EXIT_IMG_SELECTED = pygame.image.load(os.path.join('Pictures', 'Exit - selected.png'))
+HANG_IMG_UNSELECTED = pygame.image.load(os.path.join('Pictures', 'Hang_button - unselected.png'))
+HANG_IMG_SELECTED = pygame.image.load(os.path.join('Pictures', 'Hang_button - selected.png'))
 
 start_button = (button.Button
                 (SCREEN_WIDTH / 2 - START_BUTTON_W / 2, SCREEN_HEIGHT / 2 - START_BUTTON_H / 2 - 90,
                  START_IMG_UNSELECTED, START_IMG_SELECTED))
-exit_button = button.Button(SCREEN_WIDTH - EXIT_BUTTON_W - 10, 10, EXIT_IMG_UNSELECTED, EXIT_IMG_SELECTED)
+exit_button = (button.Button
+               (SCREEN_WIDTH - EXIT_BUTTON_W - 10, 10, EXIT_IMG_UNSELECTED, EXIT_IMG_SELECTED))
+hang_button = (button.Button
+               (SCREEN_WIDTH - HANG_BUTTON_W - 10, SCREEN_HEIGHT - HANG_BUTTON_H - 10,
+                HANG_IMG_UNSELECTED, HANG_IMG_SELECTED))
 
 
 def draw_entering_password(password, font, pass_color, x, y):
@@ -63,6 +71,9 @@ def main():
             draw_entering_password(password, FONT, BLACK, 380, 400)
             if exit_button.draw(screen):
                 run = False
+
+            if hang_button.draw(screen):
+                print('hang')
 
         for event in pygame.event.get():
             if event.type == pygame.TEXTINPUT:
