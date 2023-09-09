@@ -165,6 +165,7 @@ def main():
         handle_red_movement(keys_pressed, red)
         handle_bullets(bullets_red, bullets_yellow, red, yellow)
         draw_window(red, yellow, bullets_yellow, bullets_red, red_hp, yellow_hp)
+
     main()
 
 
