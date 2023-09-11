@@ -12,6 +12,7 @@ FPS = 30
 FONT_SIZE = 30
 FONT = pygame.font.SysFont('widelatin', FONT_SIZE)
 GUESS_FONT = pygame.font.SysFont("widelatin", FONT_SIZE + 20)
+ANSWER_FONT = pygame.font.SysFont("calibri", FONT_SIZE + 5)
 
 EXIT_BUTTON_W = 120
 EXIT_BUTTON_H = 43
@@ -21,6 +22,8 @@ HANG_BUTTON_W = 350
 HANG_BUTTON_H = 83
 LETTER_HOLDER_W = 25
 LETTER_HOLDER_H = 5
+CONFIRM_BUTTON_W = 350
+CONFIRM_BUTTON_H = 58
 
 BLACK = (0, 0, 0)
 
@@ -35,6 +38,9 @@ EXIT_IMG_UNSELECTED = pygame.image.load(os.path.join('Pictures', 'Exit - unselec
 EXIT_IMG_SELECTED = pygame.image.load(os.path.join('Pictures', 'Exit - selected.png'))
 HANG_IMG_UNSELECTED = pygame.image.load(os.path.join('Pictures', 'Hang_button - unselected.png'))
 HANG_IMG_SELECTED = pygame.image.load(os.path.join('Pictures', 'Hang_button - selected.png'))
+CONFIRM_IMG_UNSELECTED = pygame.image.load(os.path.join('Pictures', 'confirm_unselected.png'))
+CONFIRM_IMG_SELECTED = pygame.image.load(os.path.join('Pictures', 'confirm_selected.png'))
+
 
 HANGMAN_STAGE_1 = pygame.image.load(os.path.join('Pictures', 'hangman_stage_1.png'))
 HANGMAN_STAGE_2 = pygame.image.load(os.path.join('Pictures', 'hangman_stage_2.png'))
@@ -54,18 +60,50 @@ exit_button = (button.Button
 hang_button = (button.Button
                (SCREEN_WIDTH - HANG_BUTTON_W - 10, SCREEN_HEIGHT - HANG_BUTTON_H - 10,
                 HANG_IMG_UNSELECTED, HANG_IMG_SELECTED))
+confirm_button = (button.Button
+                  (SCREEN_WIDTH / 2 - CONFIRM_BUTTON_W / 2, 500,
+                   CONFIRM_IMG_UNSELECTED, CONFIRM_IMG_SELECTED))
 
 
-def track_answers(password):
+def track_answers(password, guess, list_of_holders, initiate):
     x_position = 400
-    list_of_holders = []
+    list_of_matches = []
+    password_list = []
+    for letter in password:
+        password_list.append(letter)
+
     for _ in range(len(password)):
-        let_hold = pygame.Rect(x_position, 150, LETTER_HOLDER_W, LETTER_HOLDER_H)
-        list_of_holders.append(let_hold)
-        x_position += LETTER_HOLDER_W + 8
+        if not initiate:
+            let_hold = pygame.Rect(x_position, 150, LETTER_HOLDER_W, LETTER_HOLDER_H)
+            x_position += LETTER_HOLDER_W + 7
+            list_of_holders.append(let_hold)
+
+    if guess in password_list:
+        for char in password_list:
+            if char == guess:
+                list_of_matches.append(password_list.index(char))
+                current_index = password_list.index(char)
+                password_list[current_index] = " "
+                print(list_of_matches)
+        for index in list_of_matches:
+            lst_letter_and_x = [guess]
+            current_x_pos = list_of_holders[index][0]
+            lst_letter_and_x.append(current_x_pos)
+            list_of_holders[index] = lst_letter_and_x
 
     for let_holder in list_of_holders:
-        pygame.draw.rect(screen, BLACK, let_holder)
+        print(let_holder)
+        print(list_of_holders)
+        if isinstance(let_holder[0], str):
+            pass
+            letter = ANSWER_FONT.render(let_holder[0], True, BLACK)
+            screen.blit(letter, (let_holder[1], 136))
+        else:
+            pygame.draw.rect(screen, BLACK, let_holder)
+
+    initiate = True
+    guess = ''
+    return initiate, guess
 
 
 def draw_entering_password(password, font, pass_color, x, y):
@@ -84,12 +122,15 @@ def draw_entering_guess(password, font, pass_color, x, y):
 
 
 def main():
+    confirmed_guess = ''
     clock = pygame.time.Clock()
     run = True
     entering_password = False
     hanging_time = False
     password = ''
     letter_guess = ''
+    list_of_holders = []
+    initiate = False
     while run:
         clock.tick(FPS)
         if not entering_password:
@@ -114,8 +155,12 @@ def main():
         if hanging_time:
             screen.blit(DESERT_BACKGROUND, (0, 0))
             screen.blit(HANGMAN_STAGE_FINAL, (15, 110))
-            track_answers(password)
+            initiate, confirmed_guess = track_answers(password, confirmed_guess, list_of_holders, initiate)
             draw_entering_guess(letter_guess, GUESS_FONT, BLACK, 515, 400)
+
+            if confirm_button.draw(screen):
+                print('sca')
+
             if exit_button.draw(screen):
                 run = False
 
