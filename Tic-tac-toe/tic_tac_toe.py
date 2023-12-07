@@ -1,6 +1,7 @@
 import pygame
 import os
 import sys
+
 pygame.mixer.init()
 pygame.font.init()
 
@@ -37,21 +38,21 @@ def draw_game(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, mouse_position):
 
     if mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 and not t_l:  # TOP_LEFT
         WIN.blit(SQUARE, (10, 10))
-    elif mouse_position[0] < (SIDE / 3) * 2 and mouse_position[1] < SIDE / 3 and not t_m:   # TOP_MIDDLE
+    elif mouse_position[0] < (SIDE / 3) * 2 and mouse_position[1] < SIDE / 3 and not t_m:  # TOP_MIDDLE
         WIN.blit(SQUARE, (12 + SIDE / 3, 10))
-    elif (SIDE / 3) * 2 < mouse_position[0] < (SIDE / 3) * 3 and mouse_position[1] < SIDE / 3 and not t_r:   # TOP_RIGHt
+    elif (SIDE / 3) * 2 < mouse_position[0] < (SIDE / 3) * 3 and mouse_position[1] < SIDE / 3 and not t_r:  # TOP_RIGHt
         WIN.blit(SQUARE, (12 + SIDE / 3 * 2, 10))
-    elif mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 * 2 and not m_l:   # MIDDLE_LEFT
+    elif mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 * 2 and not m_l:  # MIDDLE_LEFT
         WIN.blit(SQUARE, (10, 12 + SIDE / 3))
-    elif mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 * 3 and not b_l:   # BOTTOM_LEFT
+    elif mouse_position[0] < SIDE / 3 and mouse_position[1] < SIDE / 3 * 3 and not b_l:  # BOTTOM_LEFT
         WIN.blit(SQUARE, (10, 12 + SIDE / 3 * 2))
-    elif mouse_position[0] < SIDE / 3 * 2 and mouse_position[1] < SIDE / 3 * 2 and not m_m:   # MIDDLE_MIDDLE
+    elif mouse_position[0] < SIDE / 3 * 2 and mouse_position[1] < SIDE / 3 * 2 and not m_m:  # MIDDLE_MIDDLE
         WIN.blit(SQUARE, (12 + SIDE / 3, 12 + SIDE / 3))
-    elif mouse_position[0] < SIDE / 3 * 3 and mouse_position[1] < SIDE / 3 * 2 and not m_r:   # MIDDLE_RIGHT
+    elif mouse_position[0] < SIDE / 3 * 3 and mouse_position[1] < SIDE / 3 * 2 and not m_r:  # MIDDLE_RIGHT
         WIN.blit(SQUARE, (12 + SIDE / 3 * 2, 12 + SIDE / 3))
-    elif mouse_position[0] < SIDE / 3 * 2 and mouse_position[1] < SIDE / 3 * 3 and not b_m:    # BOTTOM_MIDDLE
+    elif mouse_position[0] < SIDE / 3 * 2 and mouse_position[1] < SIDE / 3 * 3 and not b_m:  # BOTTOM_MIDDLE
         WIN.blit(SQUARE, (SIDE / 3 + 12, 12 + SIDE / 3 * 2))
-    elif mouse_position[0] < SIDE / 3 * 3 and mouse_position[1] < SIDE / 3 * 3 and not b_r:   # BOTTOM_RIGHT
+    elif mouse_position[0] < SIDE / 3 * 3 and mouse_position[1] < SIDE / 3 * 3 and not b_r:  # BOTTOM_RIGHT
         WIN.blit(SQUARE, (SIDE / 3 * 2 + 12, 12 + SIDE / 3 * 2))
 
     if t_l == 'x':
@@ -178,6 +179,7 @@ def keep_score(mouse_pressed, mouse_position, t_l, t_m, t_r, m_l, m_m, m_r, b_l,
                 turn += 1
                 WRITE_O_SOUND.play()
     return t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r, turn
+
 
 def check_winner(t_l, t_m, t_r, m_l, m_m, m_r, b_l, b_m, b_r):
     x_wins = False
